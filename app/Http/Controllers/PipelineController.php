@@ -8,7 +8,7 @@ class PipelineController extends Controller
 {
     public function getPipelines()
     {
-        $gitlab_url = 'https://gitlab.com/api/v4/projects/';
+        $gitlab_url = '#';
         $project_id = '69719907';
         $access_token = '#';
 
