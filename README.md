@@ -19,8 +19,8 @@ SASS: 1.87.0
 ## Projekta palaišana
 
 Jāinstalē Laravel.
-jāinstalē visas attiecīgās atkarības.
-Norādīt datubāzes piekļuves datus failā .env (projekts izmanto MySQL).
+Jāinstalē visas attiecīgās atkarības.
+Jānorādā datubāzes piekļuves datus failā .env (projekts izmanto MySQL).
 Kad projekts ir uzbūvēts un darbojas, lapa būs pieejama standarta adresē http://127.0.0.1:8000/pipelines.
 
 ## Paveiktais
