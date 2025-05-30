@@ -4,12 +4,12 @@
 
 @section('content')
     <div class="stats-wrapper">
-        <h1>Statistics Overview</h1>
+        <h2>Statistics Overview</h2>
 
         <div class="stats-cards">
             <div class="stats-card">
                 <h2>Deployment Time</h2>
-                <p>{{ $data['deploymentTime'] }} h</p>
+                <p>{{ $data['deploymentTime'] }} min</p>
             </div>
             <div class="stats-card">
                 <h2>Test Coverage</h2>
@@ -37,12 +37,12 @@
         </div>
     </div>
 
-    <script>
-        window.statisticsData = {
-            historyLabels: {!! json_encode(array_column($data['history'], 'date')) !!},
-            historyData: {!! json_encode(array_column($data['history'], 'time')) !!},
-            substatusLabels: {!! json_encode(array_keys($data['substatus'])) !!},
-            substatusData: {!! json_encode(array_values($data['substatus'])) !!}
-        };
-    </script>
+{{--    <script>--}}
+{{--        window.statisticsData = {--}}
+{{--            historyLabels: {!! json_encode(array_column($data['history'], 'display_date')) !!},--}}
+{{--            historyData: {!! json_encode(array_column($data['history'], 'time')) !!},--}}
+{{--            substatusLabels: {!! json_encode(array_keys($data['substatus'])) !!},--}}
+{{--            substatusData: {!! json_encode(array_values($data['substatus'])) !!},--}}
+{{--        };--}}
+{{--    </script>--}}
 @endsection

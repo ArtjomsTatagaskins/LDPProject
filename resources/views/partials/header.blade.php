@@ -1,5 +1,5 @@
 <header>
     <div class="logo-container">
-        <a href="#">Æ</a>
+        <a href="{{ route('home') }}">Æ</a>
     </div>
 </header>

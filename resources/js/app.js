@@ -1,49 +1,82 @@
 import Chart from 'chart.js/auto';
 
+let historyChart = null;
+let substatusChart = null;
+
+async function fetchStatistics() {
+    try {
+        const response = await fetch('/statistics-data');
+        if (!response.ok) throw new Error('Network error');
+        const data = await response.json();
+
+        updateCharts(data);
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
+function updateCharts(data) {
+    const historyLabels = data.history.map(item => item.display_date);
+    const historyData = data.history.map(item => item.time);
+    const substatusLabels = Object.keys(data.substatus);
+    const substatusData = Object.values(data.substatus);
+
+    if (historyChart) {
+        historyChart.data.labels = historyLabels;
+        historyChart.data.datasets[0].data = historyData;
+        historyChart.update();
+    }
+
+    if (substatusChart) {
+        substatusChart.data.labels = substatusLabels;
+        substatusChart.data.datasets[0].data = substatusData;
+        substatusChart.update();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    if (!window.statisticsData) return;
+    const historyCtx = document.getElementById('historyChart').getContext('2d');
+    const gradient = historyCtx.createLinearGradient(0, 0, 0, historyCtx.canvas.height);
+    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.5)');
+    gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
 
-    const { historyLabels, historyData, substatusLabels, substatusData } = window.statisticsData;
+    historyChart = new Chart(historyCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Deployment Time',
+                data: [],
+                borderColor: '#6366f1',
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
 
-    const historyCtx = document.getElementById('historyChart')?.getContext('2d');
-    const substatusCtx = document.getElementById('substatusChart')?.getContext('2d');
+    const substatusCtx = document.getElementById('substatusChart').getContext('2d');
+    substatusChart = new Chart(substatusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                backgroundColor: ['#a78bfa', '#f472b6', '#60a5fa']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
 
-    if (historyCtx) {
-        new Chart(historyCtx, {
-            type: 'line',
-            data: {
-                labels: historyLabels,
-                datasets: [{
-                    label: 'Deployment Time',
-                    data: historyData,
-                    borderColor: '#6366f1',
-                    tension: 0.3,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    }
-
-    if (substatusCtx) {
-        new Chart(substatusCtx, {
-            type: 'doughnut',
-            data: {
-                labels: substatusLabels,
-                datasets: [{
-                    data: substatusData,
-                    backgroundColor: ['#a78bfa', '#f472b6', '#60a5fa']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    }
+    fetchStatistics();
+    setInterval(fetchStatistics, 30000);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
