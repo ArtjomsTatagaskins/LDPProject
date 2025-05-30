@@ -14,28 +14,30 @@
 <div class="wrapper">
     @include('partials.header')
 
-    <div class="menu-container">
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <img class="open" src="{{ asset('icons/menu.svg') }}" alt="open menu">
-            <img class="close" src="{{ asset('icons/menu.svg') }}" alt="close menu">
-        </div>
-        <div class="menu" id="menu">
-            <div class="new-project">
-                <a href="#"><img src="{{ asset('icons/plus.svg') }}" alt="plus"></a>
-            </div>
-            <div class="link">
-                <a href="#"><img src="{{ asset('icons/star.svg') }}" alt="star"><p>Pipelines</p></a>
-            </div>
-            <div class="link">
-                <a href="#"><img src="{{ asset('icons/settings.svg') }}" alt="settings"><p>Logs</p></a>
-            </div>
-            <div class="link">
-                <a href="#"><img src="{{ asset('icons/folder.svg') }}" alt="folder"><p>Projekti</p></a>
-            </div>
-        </div>
-    </div>
-
     <main>
+        <div class="menu-container">
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <img class="open" src="{{ asset('icons/menu.svg') }}" alt="open menu">
+                <img class="close" src="{{ asset('icons/menu.svg') }}" alt="close menu">
+            </div>
+            <div class="menu" id="menu">
+                <div class="new-project">
+                    <a href="#"><img src="{{ asset('icons/plus.svg') }}" alt="plus"></a>
+                </div>
+                <div class="link">
+                    <a href="#"><img src="{{ asset('icons/star.svg') }}" alt="star"><p>Pipelines</p></a>
+                </div>
+                <div class="link">
+                    <a href="{{ route('statistics') }}">
+                        <img src="{{ asset('icons/settings.svg') }}" alt="settings">
+                        <p>Statistics</p>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="#"><img src="{{ asset('icons/folder.svg') }}" alt="folder"><p>Projekti</p></a>
+                </div>
+            </div>
+        </div>
         @yield('content')
     </main>
 
