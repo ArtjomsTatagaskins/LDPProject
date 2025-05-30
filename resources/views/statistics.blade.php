@@ -24,6 +24,13 @@
         <div class="stats-graphs">
             <div class="chart-container">
                 <h3>Deployment History</h3>
+                <div class="filter-container">
+                    <select id="rangeSelector">
+                        <option value="day">1 day</option>
+                        <option value="week">7 days</option>
+                        <option value="month">30 days</option>
+                    </select>
+                </div>
                 <div class="canvas-wrapper">
                     <canvas id="historyChart"></canvas>
                 </div>
@@ -36,13 +43,4 @@
             </div>
         </div>
     </div>
-
-{{--    <script>--}}
-{{--        window.statisticsData = {--}}
-{{--            historyLabels: {!! json_encode(array_column($data['history'], 'display_date')) !!},--}}
-{{--            historyData: {!! json_encode(array_column($data['history'], 'time')) !!},--}}
-{{--            substatusLabels: {!! json_encode(array_keys($data['substatus'])) !!},--}}
-{{--            substatusData: {!! json_encode(array_values($data['substatus'])) !!},--}}
-{{--        };--}}
-{{--    </script>--}}
 @endsection

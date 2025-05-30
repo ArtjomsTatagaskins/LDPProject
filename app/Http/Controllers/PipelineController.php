@@ -16,6 +16,7 @@ class PipelineController extends Controller
 
         $response = file_get_contents($url);
         $pipelines = json_decode($response, true);
+        $pipelines = array_slice($pipelines, 0, 5);
 
         return view('home', compact('pipelines'));
     }

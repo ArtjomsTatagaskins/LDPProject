@@ -25,7 +25,10 @@
                     <a href="#"><img src="{{ asset('icons/plus.svg') }}" alt="plus"></a>
                 </div>
                 <div class="link">
-                    <a href="#"><img src="{{ asset('icons/star.svg') }}" alt="star"><p>Pipelines</p></a>
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('icons/star.svg') }}" alt="star">
+                        <p>Pipelines</p>
+                    </a>
                 </div>
                 <div class="link">
                     <a href="{{ route('statistics') }}">

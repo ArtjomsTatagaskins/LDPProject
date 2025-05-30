@@ -3,9 +3,12 @@ import Chart from 'chart.js/auto';
 let historyChart = null;
 let substatusChart = null;
 
-async function fetchStatistics() {
+let deploymentHistory = [];
+
+async function fetchStatistics(range = 'day') {
     try {
-        const response = await fetch('/statistics-data');
+        const params = new URLSearchParams({ range });
+        const response = await fetch('/statistics-data?' + params.toString());
         if (!response.ok) throw new Error('Network error');
         const data = await response.json();
 
@@ -16,21 +19,28 @@ async function fetchStatistics() {
 }
 
 function updateCharts(data) {
-    const historyLabels = data.history.map(item => item.display_date);
-    const historyData = data.history.map(item => item.time);
+    deploymentHistory = data.history.slice();
+
     const substatusLabels = Object.keys(data.substatus);
     const substatusData = Object.values(data.substatus);
 
-    if (historyChart) {
-        historyChart.data.labels = historyLabels;
-        historyChart.data.datasets[0].data = historyData;
-        historyChart.update();
-    }
+    updateHistoryChart(deploymentHistory);
 
     if (substatusChart) {
         substatusChart.data.labels = substatusLabels;
         substatusChart.data.datasets[0].data = substatusData;
         substatusChart.update();
+    }
+}
+
+function updateHistoryChart(historyData) {
+    const labels = historyData.map(item => item.display_date);
+    const data = historyData.map(item => item.time);
+
+    if (historyChart) {
+        historyChart.data.labels = labels;
+        historyChart.data.datasets[0].data = data;
+        historyChart.update();
     }
 }
 
@@ -75,8 +85,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    fetchStatistics();
-    setInterval(fetchStatistics, 30000);
+    const rangeSelector = document.getElementById('rangeSelector');
+    if (rangeSelector) {
+        rangeSelector.addEventListener('change', (e) => {
+            fetchStatistics(e.target.value);
+        });
+    }
+
+    fetchStatistics('day');
+    setInterval(() => fetchStatistics(rangeSelector?.value || 'day'), 30000);
 });
 
 document.addEventListener("DOMContentLoaded", function () {

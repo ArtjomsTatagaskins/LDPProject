@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
 {
@@ -13,25 +14,44 @@ class StatisticsController extends Controller
         return view('statistics', compact('data'));
     }
 
-    public function apiData()
+    public function apiData(Request $request)
     {
-        $data = $this->fetchStatisticsData();
+        $range = $request->query('range', 'day');
+        $data = $this->fetchStatisticsData($range);
         return response()->json($data);
     }
 
-    private function fetchStatisticsData()
+    private function fetchStatisticsData(string $range = 'day')
     {
-        return Cache::remember('gitlab_statistics', 300, function () {
+        return Cache::remember("gitlab_statistics_{$range}", 300, function () use ($range) {
             date_default_timezone_set('Europe/Riga');
 
             $projectId = '69719907';
             $accessToken = env('GITLAB_ACCESS_TOKEN');
 
+            $endDate = date('Y-m-d');
+            switch ($range) {
+                case 'month':
+                    $startDate = date('Y-m-d', strtotime('-30 days'));
+                    break;
+                case 'week':
+                    $startDate = date('Y-m-d', strtotime('-7 days'));
+                    break;
+                case 'day':
+                default:
+                    $startDate = date('Y-m-d', strtotime('-1 day'));
+                    break;
+            }
+
+            $params = [
+                'per_page' => 100,
+                'updated_after' => $startDate . 'T00:00:00Z',
+                'updated_before' => $endDate . 'T23:59:59Z',
+            ];
+
             $response = Http::withHeaders([
                 'PRIVATE-TOKEN' => $accessToken,
-            ])->get("https://gitlab.com/api/v4/projects/{$projectId}/pipelines", [
-                'per_page' => 15,
-            ]);
+            ])->get("https://gitlab.com/api/v4/projects/{$projectId}/pipelines", $params);
 
             if ($response->failed()) {
                 abort(500, 'Error getting response');
@@ -91,7 +111,7 @@ class StatisticsController extends Controller
                 return $a['sort_date'] <=> $b['sort_date'];
             });
 
-            $history = array_values(array_slice($history, -5, 5, true));
+            $history = array_values(array_slice($history, -100, 100, true));
 
             $averageDeploymentTimeMinutes = $count > 0 ? round(($totalDuration / $count) / 60, 2) : 0;
 

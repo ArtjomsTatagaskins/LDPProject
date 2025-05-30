@@ -52,6 +52,12 @@ main {
   border-radius: 10px;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sort-buttons button:hover {
+  background-color: #dbe7ff;
 }
 
 .sort-buttons button img {
@@ -60,10 +66,14 @@ main {
 
 .pipeline-list {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 100px;
+  grid-template-columns: 1fr 1fr 1fr 150px;
   gap: 10px;
   border-radius: 10px;
   text-align: left;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 15px;
+  border: 1px solid #ddd;
 }
 
 #pipeline-info a {
@@ -88,6 +98,34 @@ main {
   text-align: left;
   display: flex;
   align-items: center;
+}
+
+.table-header div {
+  font-weight: 600;
+  padding: 12px 8px;
+  border-bottom: 2px solid #ccc;
+}
+
+.table-row div {
+  padding: 12px 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+
+.table-row:hover {
+  background-color: #f9f9f9;
+}
+
+.table-row div a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.table-row div a:hover {
+  text-decoration: underline;
+  color: #2563eb;
 }
 
 .more-btn {
@@ -282,6 +320,32 @@ footer {
   height: 100% !important;
   left: 0;
   top: 0;
+}
+
+.filter-container {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#rangeSelector {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9fb;
+  color: #444;
+  font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+#rangeSelector:hover,
+#rangeSelector:focus {
+  border-color: #a5b1ff;
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.3);
+  outline: none;
 }
 
 @media (max-width: 768px) {
