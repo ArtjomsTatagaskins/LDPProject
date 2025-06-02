@@ -9,15 +9,15 @@
         <div class="stats-cards">
             <div class="stats-card">
                 <h2>Deployment Time</h2>
-                <p>{{ $data['deploymentTime'] }} min</p>
+                <p id="deploymentTime">{{ $data['deploymentTime'] }} min</p>
             </div>
             <div class="stats-card">
                 <h2>Test Coverage</h2>
-                <p>{{ $data['testCoverage'] }}%</p>
+                <p id="testCoverage">{{ $data['testCoverage'] }}%</p>
             </div>
             <div class="stats-card">
                 <h2>Success Rate</h2>
-                <p>{{ $data['successRate'] }}%</p>
+                <p id="successRate">{{ $data['successRate'] }}%</p>
             </div>
         </div>
 
